@@ -1,11 +1,11 @@
 export class UserModule {
-  private users = [];
+  private users: User[] = [];
 
-  addUser(user) {
+  addUser(user: User) {
     this.users.push(user);
   }
 
-  removeUser(userId) {
+  removeUser(userId: Pick<User, 'id'>['id']) {
     for (let i = 0; i < this.users.length; i++) {
       if (this.users[i].id == userId) {
         this.users.splice(i, 1);
@@ -14,7 +14,7 @@ export class UserModule {
     }
   }
 
-  getUser(userId) {
+  getUser(userId: Pick<User, 'id'>['id']) {
     for (let user of this.users) {
       if (user.id == userId) {
         return user;
@@ -23,13 +23,18 @@ export class UserModule {
     return null;
   }
 
-  filterUsers(filterFn) {
+  filterUsers(filterFn: (user: User) => { isValid: boolean }) {
     return this.users.filter((user) => {
       let result = filterFn(user);
       return result.isValid;
     });
   }
 }
+
+export type User = {
+  id: number;
+  name: string;
+};
 
 const userModule = new UserModule();
 export const { addUser, removeUser, getUser, filterUsers } = userModule;

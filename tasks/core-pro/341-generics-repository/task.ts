@@ -8,13 +8,13 @@
 */
 
 import { MockDataAccess } from './DataAccess.ts';
-import { ProductRepository, UserRepository } from './repository.ts';
+import { Repository } from './repository.ts';
 
 (async () => {
   try {
     const dataAccess = new MockDataAccess();
-    const userRepository = new UserRepository(dataAccess);
-    const productRepository = new ProductRepository(dataAccess);
+    const userRepository = new Repository(dataAccess, 'users');
+    const productRepository = new Repository(dataAccess, 'product');
 
     const insertedUser = await userRepository.insert({
       name: 'Jane Doe',

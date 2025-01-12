@@ -4,6 +4,10 @@ type PagesMap = {
   contact: string;
 };
 
-type PagesAccess = {};
+type PagesAccess = {
+  [Props in keyof PagesMap]: boolean;
+};
 
-export function checkAccess(map: PagesMap): PagesAccess {}
+export function checkAccess(map: PagesMap): PagesAccess {
+  return Object.keys(map).reduce((acc, key) => ({ ...acc, [key]: true }), {} as PagesAccess);
+}

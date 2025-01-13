@@ -1,4 +1,8 @@
-export type Entities = 'user' | 'product' | 'order';
+export type Entities = {
+  user: User;
+  product: Product;
+  order: Order;
+};
 
 export interface User {
   id: number;

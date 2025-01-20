@@ -6,9 +6,9 @@ const config = {
   api: {
     endpoint: 'https://api.example.com',
     timeout: 5000,
-  },
+  } as const,
   debug: true,
-};
+} as const;
 
 config.api.timeout = 10000;
 config.debug = false;

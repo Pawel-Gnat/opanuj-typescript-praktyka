@@ -7,3 +7,9 @@ window.storage = {
 };
 
 console.log(`Temporary value: ${window.storage.temporaryValue}`);
+
+declare const window: {
+  storage: {
+    temporaryValue: 'Am I testing this code or is it testing me?';
+  };
+} & Window;

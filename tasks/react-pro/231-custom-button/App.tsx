@@ -2,7 +2,11 @@
   Zdefiniuj typowanie propsów dla CustomButton, które pozwoli na przekazanie dowolnych atrybutów elementu HTML button.
 */
 
-const CustomButton = ({ children }) => (
+import { ComponentProps } from 'react';
+
+type ButtonProps = ComponentProps<'button'>;
+
+const CustomButton = ({ children }: ButtonProps) => (
   <button className="p-2 text-white bg-blue-500 rounded-md">{children}</button>
 );
 

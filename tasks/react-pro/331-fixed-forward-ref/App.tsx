@@ -4,10 +4,21 @@
 3. Zadbaj o poprawne typowanie handlerów i stanu.
 */
 
-import { useRef, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { fixedForwardRef } from './fixed-foward-ref';
 
-const FormComponent = fixedForwardRef((props: any, ref) => {
+type FormComponentProps = {
+  initialData: {
+    name: string;
+    email: string;
+    age: number;
+    occupation: string;
+    bio: string;
+  };
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+};
+
+const FormComponent = fixedForwardRef<HTMLFormElement, FormComponentProps>((props, ref) => {
   return (
     <form
       ref={ref}
@@ -100,24 +111,26 @@ const FormComponent = fixedForwardRef((props: any, ref) => {
   );
 });
 
-const App = () => {
-  const formRef = useRef(null);
-  const [submittedData, setSubmittedData] = useState(null);
+type Data = FormComponentProps['initialData'];
 
-  const handleSubmit = (e) => {
+const App = () => {
+  const formRef = useRef<HTMLFormElement>(null);
+  const [submittedData, setSubmittedData] = useState<Data | null>(null);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {
-      name: formData.get('name'),
-      email: formData.get('email'),
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
       age: Number(formData.get('age')),
-      occupation: formData.get('occupation'),
-      bio: formData.get('bio'),
-    };
+      occupation: formData.get('occupation') as string,
+      bio: formData.get('bio') as string,
+    } satisfies Data;
     setSubmittedData(data);
   };
 
-  const initialData = {
+  const initialData: Data = {
     name: '',
     email: '',
     age: 0,

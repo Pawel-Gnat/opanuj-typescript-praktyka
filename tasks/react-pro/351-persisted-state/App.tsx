@@ -10,7 +10,9 @@ const App = () => {
   const [key, setKey] = useState('');
   const [inputValue, setKeyValue] = useState('');
   const [currentKey, setCurrentKey] = useState<string | null>(null);
-  const [persistedValue, setPersistedValue] = usePersistedState(currentKey || 'default-key');
+  const [persistedValue, setPersistedValue] = usePersistedState<string>(
+    currentKey || 'default-key',
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -2,8 +2,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 // Przeciążenia funkcji
 export function usePersistedState<T>(key: string, initial: T): [T, Dispatch<SetStateAction<T>>];
-
-export function usePersistedState<T>(key: string, initial: T): [T, Dispatch<SetStateAction<T>>] {
+export function usePersistedState<T>(key: string): [T | undefined, Dispatch<SetStateAction<T>>];
+export function usePersistedState<T>(key: string, initial?: T) {
   const getInitialValue = (): T | undefined => {
     const storedValue = localStorage.getItem(key);
     if (storedValue !== null) {

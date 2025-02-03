@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export function fixedForwardRef<T, P = {}>(
   render: (props: React.PropsWithoutRef<P>, ref: React.Ref<T>) => React.ReactNode,

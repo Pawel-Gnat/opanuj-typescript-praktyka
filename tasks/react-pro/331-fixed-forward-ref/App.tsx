@@ -5,7 +5,7 @@
 */
 
 import { FormEvent, useRef, useState } from 'react';
-import { fixedForwardRef } from './fixed-foward-ref';
+import { fixedForwardRef } from './fixed-forward-ref';
 
 type FormComponentProps = {
   initialData: {

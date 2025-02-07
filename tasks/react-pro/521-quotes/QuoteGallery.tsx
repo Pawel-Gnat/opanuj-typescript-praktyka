@@ -1,29 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Quote as QuoteIcon, ChevronLeft, ChevronRight } from 'lucide-react';
-import { getQuotes } from './api/quotes-api';
-import { QuotesResponse } from './model/QuotesResponse';
+import { useQuotes } from './api/quotes-api';
 
 export function QuoteGallery() {
   const [page, setPage] = useState(0);
-  const [data, setData] = useState<QuotesResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const limit = '5';
+  const limit = 5;
 
-  useEffect(() => {
-    const fetchQuotes = async () => {
-      setIsLoading(true);
-      try {
-        const response = await getQuotes(page, limit);
-        setData(response);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchQuotes();
-  }, [page]);
+  const { data, isLoading } = useQuotes(page, limit);
 
   if (isLoading) {
     return <div className="text-gray-200">Loading...</div>;
@@ -59,7 +42,7 @@ export function QuoteGallery() {
         <button
           onClick={() => setPage((p) => Math.max(0, p - 1))}
           data-testid="previous-page-button"
-          disabled={page === -1}
+          disabled={page === 0}
           className="px-4 py-2 bg-gray-800 text-gray-200 rounded-lg disabled:bg-gray-900 disabled:text-gray-600 hover:bg-gray-700 transition-colors flex items-center gap-2"
         >
           <ChevronLeft className="w-4 h-4" />

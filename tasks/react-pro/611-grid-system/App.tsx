@@ -1,12 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PlanetsGrid } from './components/PlanetsGrid';
 import SimpleCard from './components/SimpleCard';
 import DetailedCard from './components/DetailedCard';
+import { Planet, SWAPIResponse } from './types';
+import axios from 'axios';
 
 type TabType = 'simple' | 'detailed';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabType>('simple');
+  const [planets, setPlanets] = useState<Planet[]>([]);
+
+  useEffect(() => {
+    const fetchPlanets = async () => {
+      try {
+        const { data } = await axios.get<SWAPIResponse>('https://swapi.dev/api/planets/');
+        setPlanets(data.results);
+      } catch (error) {
+        console.error('Error fetching planets:', error);
+      }
+    };
+
+    fetchPlanets();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -40,15 +56,29 @@ export default function App() {
       <div data-testid="grid-container">
         {activeTab === 'simple' ? (
           <div data-testid="simple-grid">
-            <PlanetsGrid as="section" columns={3}>
-              {(planet) => <SimpleCard planet={planet} />}
-            </PlanetsGrid>
+            <PlanetsGrid
+              as="section"
+              columns={3}
+              items={planets}
+              renderItem={(planet) => (
+                <div key={planet.url} className="h-full">
+                  <SimpleCard planet={planet} />
+                </div>
+              )}
+            />
           </div>
         ) : (
           <div data-testid="detailed-grid">
-            <PlanetsGrid as="main" columns={2}>
-              {(planet) => <DetailedCard planet={planet} />}
-            </PlanetsGrid>
+            <PlanetsGrid
+              as="main"
+              columns={2}
+              items={planets}
+              renderItem={(planet) => (
+                <div key={planet.url} className="h-full">
+                  <DetailedCard planet={planet} />
+                </div>
+              )}
+            />
           </div>
         )}
       </div>

@@ -1,34 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Planet, SWAPIResponse } from '../types';
+import React from 'react';
 
-interface PlanetsGridProps<> {}
+interface PlanetsGridProps<Item, As extends React.ElementType> {
+  items: Item[];
+  renderItem: (item: Item) => React.ReactNode;
+  as?: As;
+  columns: number;
+}
 
-export function PlanetsGrid({}: PlanetsGridProps) {
-  const [planets, setPlanets] = useState<Planet[]>([]);
+type ListProps<Item, As extends React.ElementType> = PlanetsGridProps<Item, As> &
+  Omit<React.ComponentPropsWithoutRef<As>, keyof PlanetsGridProps<Item, As>>;
 
-  useEffect(() => {
-    const fetchPlanets = async () => {
-      try {
-        const { data } = await axios.get<SWAPIResponse>('https://swapi.dev/api/planets/');
-        setPlanets(data.results);
-      } catch (error) {
-        console.error('Error fetching planets:', error);
-      }
-    };
-
-    fetchPlanets();
-  }, []);
-
+export function PlanetsGrid<Item, As extends React.ElementType = 'ul'>({
+  items,
+  renderItem,
+  as,
+  columns,
+  ...rest
+}: ListProps<Item, As>) {
+  const Component = as || 'ul';
   return (
-    <div className=" bg-gray-900" data-testid="planets-grid">
+    <Component className="bg-gray-900" data-testid="planets-grid" {...rest}>
       <div className={`grid gap-6 grid-cols-1 md:grid-cols-${columns} auto-rows-fr`}>
-        {planets.map((planet) => (
-          <div key={planet.url} className="h-full">
-            {children(planet)}
-          </div>
-        ))}
+        {items.map(renderItem)}
       </div>
-    </div>
+    </Component>
   );
 }

@@ -1,12 +1,11 @@
 import { AlertCircle, ChevronLeft, ChevronRight, Loader, Rocket } from 'lucide-react';
 import { StarshipCard } from './StarshipCard';
 import { useState } from 'react';
+import { useGetStarships } from './generated/swapi-client';
 
 export default function Starships() {
   const [page, setPage] = useState(1);
-  const [data] = useState(null);
-  const [isLoading] = useState(false);
-  const [isError] = useState(false);
+  const { data, isLoading, isError } = useGetStarships({ page });
 
   if (isLoading) {
     return (

@@ -17,14 +17,14 @@ export default function App() {
   const applyStyles = () => {
     let StyledText = BaseText;
 
-    if (styles.rainbow) {
-      StyledText = withRainbow(StyledText);
+    if (styles.bold) {
+      StyledText = withBold(StyledText);
     }
     if (styles.italic) {
       StyledText = withItalics(StyledText);
     }
-    if (styles.bold) {
-      StyledText = withBold(StyledText);
+    if (styles.rainbow) {
+      StyledText = withRainbow(StyledText);
     }
 
     return StyledText;

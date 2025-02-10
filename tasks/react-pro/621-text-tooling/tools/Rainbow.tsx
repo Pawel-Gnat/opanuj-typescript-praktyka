@@ -16,6 +16,8 @@ export default function withRainbow<P extends TextProps>(WrappedComponent: React
     const { text, ...rest } = props;
     const processedText = typeof text === 'string' ? rainbowText(text) : text;
 
-    return <WrappedComponent {...(rest as P)} text={processedText} />;
+    const newText = <span data-testid="rainbow">{processedText}</span>;
+
+    return <WrappedComponent {...(rest as P)} text={newText} />;
   };
 }

@@ -29,14 +29,14 @@ export default function App() {
       />
       <div className="flex flex-row gap-4">
         <button
-          // onClick={() => handleSearch()}
+          onClick={() => handleSearch()}
           data-testid="search-button-new"
           className="px-4 py-2 text-white bg-teal-500 rounded hover:bg-teal-600 font-bold min-w-64"
         >
           Search (NEW)
         </button>
         <button
-          // onClick={() => handleSearch(true)}
+          onClick={() => handleSearch(true)}
           data-testid="search-button-legacy"
           className="px-4 py-2 text-white bg-sky-500 rounded hover:bg-sky-600 font-bold min-w-64"
         >

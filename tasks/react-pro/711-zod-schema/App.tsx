@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useEffect, useState } from 'react';
+import { useForm, useFieldArray } from 'react-hook-form';
+import { Cart, CartSchema } from './Cart';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function App() {
-
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const getItemId = () => {
     return `${new Date().getTime()}`.substring(4, 10);
-  }
+  };
 
   const {
     register,
@@ -15,33 +16,33 @@ export default function App() {
     handleSubmit,
     watch,
     setValue,
-    formState: { errors }
+    formState: { errors },
   } = useForm<Cart>({
     resolver: zodResolver(CartSchema),
     defaultValues: {
       items: [],
-      total: 0
-    }
+      total: 0,
+    },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "items"
+    name: 'items',
   });
 
-  const items = watch("items");
+  const items = watch('items');
   const calculatedTotal = items.reduce(
     (sum, item) => sum + (item.price || 0) * (item.quantity || 0) * 2,
-    0
+    0,
   );
 
   useEffect(() => {
-    setValue("total", calculatedTotal);
+    setValue('total', calculatedTotal);
   }, [calculatedTotal, setValue]);
 
   const createItem = () => {
-    append({ id: getItemId(), name: "", price: 0, quantity: 0 });
-  }
+    append({ id: getItemId(), name: '', price: 0, quantity: 0 });
+  };
 
   const onSubmit = () => {
     setIsSubmitted(true);
@@ -98,7 +99,9 @@ export default function App() {
                 </div>
               ))}
               {errors.items && (
-                <p className="text-red-400 text-sm" data-testid="items-error">{errors.items.message}</p>
+                <p className="text-red-400 text-sm" data-testid="items-error">
+                  {errors.items.message}
+                </p>
               )}
               <button
                 type="button"
@@ -114,7 +117,7 @@ export default function App() {
           <div>
             <label className="block text-sm font-medium mb-1">Total</label>
             <input
-              {...register("total")}
+              {...register('total')}
               type="number"
               step="0.01"
               readOnly
@@ -122,10 +125,9 @@ export default function App() {
               className="w-full font-bold text-xlrounded bg-gray-700 cursor-not-allowed"
             />
             {errors.total && (
-              <p className="text-red-400 text-sm" data-testid="total-error">{errors.total.message}</p>
-            )}
-            {errors.sum && (
-              <p className="text-red-400 text-sm" data-testid="total-error">{errors.sum.message}</p>
+              <p className="text-red-400 text-sm" data-testid="total-error">
+                {errors.total.message}
+              </p>
             )}
           </div>
         </div>
@@ -138,11 +140,11 @@ export default function App() {
           Submit
         </button>
       </form>
-      {isSubmitted &&
+      {isSubmitted && (
         <p className="text-green-400 text-sm text-center mt-4" data-testid="submitted-message">
           Koszyk został wysłany!
         </p>
-      }
+      )}
     </div>
   );
 }
